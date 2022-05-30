@@ -38,6 +38,6 @@ app.post("/items", (req, res) => {
 
 // -------------------- PORTS ------------------
 
-app.listen(port, () => {
+app.listen(process.env.PORT || port, () => {
     console.log("Listening on port 4000");
 });
