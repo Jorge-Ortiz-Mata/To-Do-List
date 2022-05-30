@@ -5,14 +5,11 @@ const port = 4000;
 
 // -------- DATE section. -----------
 
-const options = {weekday: "long", day: "numeric", month: "long"};
-const today = new Date();
-const day = today.toLocaleDateString("en-US", options);
-console.log(day);
+const day = require(__dirname + "/date.js");
 
 // ---------- ITEMS section -----------
 
-let listItems = [];
+const listItems = [];
 let item = '';
 
 // ---------------- ends -------------------
@@ -24,12 +21,16 @@ app.set('view engine', 'ejs');
 // -------------------- GET ------------------
 
 app.get("/", (req, res) => {
-    res.render('index', {currentDate: day, items: listItems});
+    res.render('pages/index', {currentDate: day, items: listItems});
+});
+
+app.get("/about", (req, res) => {
+    res.render('pages/about');
 });
 
 // -------------------- POST ------------------
 
-app.post("/", (req, res) => {
+app.post("/items", (req, res) => {
     item  = req.body.item;
     listItems.push(item);
     res.redirect("/");
