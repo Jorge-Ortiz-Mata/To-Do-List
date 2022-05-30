@@ -7,8 +7,28 @@
     <title>To Do List - App</title>
 </head>
 <body>
-    <h1>
-        Hello World <%= foo %>
-    </h1>
+    <p>
+        <strong><%= currentDate %></strong>
+    </p>
+
+    <form action="/" method="post">
+        <label for="item">Item: </label>
+        <input type="text" name="item" placeholder="e.i. buy eggs">
+        <button type="submit">Add Item</button>
+    </form>
+
+    <section>
+        <h3>Items</h3>
+        <% if(items.length == 0){ %>
+            <p>Start adding items to your list by typping in the input above.</p>
+        <% }else{ %>
+            <ul>
+                <% for(let i = 0; i < items.length; i++){ %>
+                    <li><%= items[i] %></li>
+                <% } %>
+            </ul>
+        <% } %>
+    </section>
+
 </body>
 </html>
