@@ -28,8 +28,13 @@
             <% }else{ %>
                 <ul>
                     <% items.map((item) => { %>
-                        <li><%= item.name %></li>
-                        <small>Crated at: <b><%= item.date %></b></small> <br> <br>
+                        <form action="/delete" method="post">
+                            <li>
+                                <input type="checkbox" name="checkbox" value="<%= item.name %>" onclick="submit()">
+                                <%= item.name %> <br>
+                                <small>Crated at: <b><%= item.date %></b></small> 
+                            </li> 
+                        </form> <br>
                     <% }) %>
                 </ul>
             <% } %>

@@ -43,6 +43,18 @@ app.post("/items", (req, res) => {
     item.save();
     res.redirect("/");
 });
+
+app.post("/delete", (req, res) => {
+    const deleteItem = req.body.checkbox;
+    Item.deleteOne({name: deleteItem}, function(err){
+        if(err){
+            console.log(err);
+        } else {
+            console.log("Item successfully deleted.");
+            res.redirect('/');
+        }
+    });
+});
 // -------------------- PORTS ------------------
 
 app.listen(process.env.PORT || port, () => {
