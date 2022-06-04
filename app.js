@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const express = require("express");
 const bodyParser = require("body-parser");
+const _ = require("lodash");
 const app = express();
 const port = 4000;
 // -------------------------------------------
@@ -11,7 +12,7 @@ const day = require(__dirname + "/date.js");
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static("public"));
 app.set('view engine', 'ejs');
-mongoose.connect("mongodb://localhost:27017/toDoList", { useNewUrlParser: true });
+mongoose.connect("mongodb+srv://admin-jorge:j0rge.107@to-do-list-cluster.in43m1e.mongodb.net/toDoList", { useNewUrlParser: true });
 // -------------------------------------------
 // ---------------- Create SCHEMAS -----------------
 const itemSchema = new mongoose.Schema({
@@ -36,30 +37,26 @@ const List = mongoose.model("List", listSchema);
 // -------------------------------------------
 // -------------------- GET ------------------
 app.get("/", (req, res) => {
-    Item.find({}, function(err, items){
-        res.render('pages/index', {currentDate: day.getDate(), items: items});
-    });
+    res.render('pages/list', {name: "Home", items: []});
 });
 
 app.get("/about", (req, res) => {
     res.render('pages/about');
 });
 
-app.get("/:page", (req, res) => {
-    List.find({}, function(err, lists){
-        const page = req.params.page;
-        List.findOne({name: page}, function (err, currentList) {
-            if(currentList === null){
-                const newList = new List({
-                    name: page,
-                    items: []
-                });
-                newList.save();
-                res.redirect("/" + page);
-            } else {
-                res.render('pages/list', {currentDate: day.getDate(), list: currentList});
-            }
-        });
+app.get("/lists/:page", (req, res) => {
+    const page = _.capitalize(req.params.page);
+    List.findOne({name: page}, function (err, currentList) {
+        if(!currentList){
+            const newList = new List({
+                name: page,
+                items: []
+            });
+            newList.save();
+            res.redirect("/lists/" + page);
+        } else {
+            res.render('pages/list', {name: currentList.name, items: currentList.items});
+        }
     });
 })
 // -------------------------------------------
@@ -78,15 +75,15 @@ app.post("/", (req, res) => {
         List.findOne({name: listName}, function(err, list){
             list.items.push(item);
             list.save();
-            res.redirect('/' + listName);
-        })
+            res.redirect('/lists/' + listName);
+        });
     }
 });
 
 app.post("/delete", (req, res) => {
-    const deleteItem = req.body.checkbox;
-    Item.deleteOne({name: deleteItem}, function(err){
-        err ? console.log(err) : res.redirect('/');
+    const {item, list} = req.body;
+    List.findOneAndUpdate({name: list}, {$pull: {items: {name: item}}}, function(err, results){
+        err ? console.log(err) : res.redirect('/lists/' + list);
     });
 });
 // -------------------------------------------

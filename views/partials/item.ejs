@@ -1,0 +1,6 @@
+<form action="/delete" method="post">
+    <input type="checkbox" name="item" value="<%= item.name %>" onchange="submit()">
+    <input type="hidden" name="list" value="<%= list %>">
+    Task: <strong><%= item.name %></strong> <br>
+    <small>Date: <strong><%= item.date %></strong></small>
+</form> <br>
