@@ -12,7 +12,7 @@ const day = require(__dirname + "/date.js");
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static("public"));
 app.set('view engine', 'ejs');
-mongoose.connect("mongodb+srv://admin-jorge:j0rge.107@to-do-list-cluster.in43m1e.mongodb.net/toDoList", { useNewUrlParser: true });
+mongoose.connect("mongodb+srv://admin-jorge:" + process.env.MONGO_PASSWORD + "@to-do-list-cluster.in43m1e.mongodb.net/toDoList", { useNewUrlParser: true });
 // -------------------------------------------
 // ---------------- Create SCHEMAS -----------------
 const itemSchema = new mongoose.Schema({
