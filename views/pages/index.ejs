@@ -15,17 +15,17 @@
             <strong><%= currentDate %></strong>
         </p>
 
-        <form action="/items" method="post">
+        <form action="/" method="post">
             <label for="item">Item: </label>
             <input type="text" name="item" placeholder="e.i. buy eggs" autocomplete="off">
-            <button type="submit">Add Item</button>
+            <button type="submit" name="button" value="Index">Add Item</button>
         </form>
 
         <section>
             <h3>Items</h3>
             <% if(items.length == 0){ %>
                 <p>Start adding items to your list by typping in the input above.</p>
-            <% }else{ %>
+            <% } else { %>
                 <ul>
                     <% items.map((item) => { %>
                         <form action="/delete" method="post">

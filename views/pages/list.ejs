@@ -12,8 +12,9 @@
         <%- include('../partials/header'); -%>
 
         <h1><%= list.name %></h1>
-        
 
+        <%- include('../partials/form', {name: list.name}); -%>
+        
         <%- include('../partials/footer'); -%>
 
     </body>

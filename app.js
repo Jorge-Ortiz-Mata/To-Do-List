@@ -64,25 +64,29 @@ app.get("/:page", (req, res) => {
 })
 // -------------------------------------------
 // -------------------- POST ------------------
-app.post("/items", (req, res) => {
-    let itemName  = req.body.item;
+app.post("/", (req, res) => {
+    const itemName  = req.body.item;
+    const listName = req.body.button;
     const item = new Item({
         name: itemName,
         date: day.getDate()
     });
-    item.save();
-    res.redirect("/");
+    if(listName === "Index"){
+        item.save();
+        res.redirect("/");
+    } else {
+        List.findOne({name: listName}, function(err, list){
+            list.items.push(item);
+            list.save();
+            res.redirect('/' + listName);
+        })
+    }
 });
 
 app.post("/delete", (req, res) => {
     const deleteItem = req.body.checkbox;
     Item.deleteOne({name: deleteItem}, function(err){
-        if(err){
-            console.log(err);
-        } else {
-            console.log("Item successfully deleted.");
-            res.redirect('/');
-        }
+        err ? console.log(err) : res.redirect('/');
     });
 });
 // -------------------------------------------
